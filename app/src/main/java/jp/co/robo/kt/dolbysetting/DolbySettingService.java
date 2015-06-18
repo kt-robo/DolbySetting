@@ -23,25 +23,21 @@ public class DolbySettingService extends Service {
     private static final String ACTION = "jp.co.robo.kt.dolbysetting.ACTION_TOGGLE_DOLBY";
 
     public DolbySettingService() {
-        Log.d(TAG, "constructor called.");
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind() called.");
         return(null);
     }
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate() called.");
         initDolbyClient();
         super.onCreate();
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy() called.");
         finalizeDolbyClient();
         deleteNotification();
         super.onDestroy();
@@ -50,7 +46,6 @@ public class DolbySettingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = (intent == null)? "":intent.getAction();
-        Log.d(TAG, "onStartCommand(action=" + action + ") called.");
         if (ACTION.equals(action)) {
             toggleDolby();
         } else {
@@ -144,7 +139,6 @@ public class DolbySettingService extends Service {
     }
 
     private void deleteNotification() {
-        Log.d(TAG, "deleteNotification() called");
         NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         manager.cancel(NOTIFICATION_ID);
     }
