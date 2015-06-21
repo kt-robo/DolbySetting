@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">DolbySetting</string>
     <string name="action_name">jp.co.robo.kt.dolbysetting.ACTION_TOGGLE_DOLBY</string>
+    <string name="dolby_on">DOLBY=ON</string>
+    <string name="dolby_off">DOLBY=OFF</string>
 </resources>

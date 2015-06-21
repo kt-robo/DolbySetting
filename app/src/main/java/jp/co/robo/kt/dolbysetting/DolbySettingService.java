@@ -19,12 +19,9 @@ import android.widget.RemoteViews;
  * AppWidgetからの要求で起動される。
  */
 public class DolbySettingService extends Service {
-    private static final String TAG = "DolbySettingService";
     private boolean mDolbyOn;
     private DolbyMobileAudioEffectClient mDolbyClient;
     private DolbyMobileClientCallbacks mCallback;
-    private static final int NOTIFICATION_ID = 0;
-    private static final String ACTION = "jp.co.robo.kt.dolbysetting.ACTION_TOGGLE_DOLBY";
 
     public DolbySettingService() {
     }
@@ -50,7 +47,7 @@ public class DolbySettingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = (intent == null)? "":intent.getAction();
-        if (ACTION.equals(action)) {
+        if (getAction().equals(action)) {
             toggleDolby();
         } else {
             initializeWidget();
@@ -64,7 +61,7 @@ public class DolbySettingService extends Service {
         mCallback = new DolbyMobileClientCallbacks() {
             @Override
             public void onEffectOnChanged(boolean on) {
-                Log.d(TAG, "onEffectOnChanged(" + on + ")");
+                Log.d(getClass().getName(), "onEffectOnChanged(" + on + ")");
                 mDolbyOn = on;
                 updateWidget();
                 displayNotification();
@@ -75,7 +72,7 @@ public class DolbySettingService extends Service {
             @Override
             public void onServiceConnected() {
                 mDolbyOn = mDolbyClient.getDolbyEffectOn();
-                Log.d(TAG, "onServiceConnected() called. mDolbyOn=" + mDolbyOn);
+                Log.d(getClass().getName(), "onServiceConnected() called. mDolbyOn=" + mDolbyOn);
                 updateWidget();
                 displayNotification();
             }
@@ -124,11 +121,11 @@ public class DolbySettingService extends Service {
         int smallIconId;
         int largeIconId;
         if (mDolbyOn) {
-            contentString = "DOLBY=ON";
+            contentString = getString(R.string.dolby_on);
             smallIconId = R.mipmap.ic_stat_notify_on_small;
             largeIconId = R.mipmap.ic_stat_notify_on_large;
         } else {
-            contentString = "DOLBY=OFF";
+            contentString = getString(R.string.dolby_off);
             smallIconId = R.mipmap.ic_stat_notify_off_small;
             largeIconId = R.mipmap.ic_stat_notify_off_large;
         }
@@ -139,12 +136,12 @@ public class DolbySettingService extends Service {
         builder.setSmallIcon(smallIconId);
         builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), largeIconId));
         NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(NOTIFICATION_ID, builder.build());
+        manager.notify(getResources().getInteger(R.integer.notificatioin_id), builder.build());
     }
 
     private void deleteNotification() {
         NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        manager.cancel(NOTIFICATION_ID);
+        manager.cancel(getResources().getInteger(R.integer.notificatioin_id));
     }
 
     private void toggleDolby() {
@@ -156,6 +153,11 @@ public class DolbySettingService extends Service {
     }
 
     private PendingIntent getPendingIntent() {
-        return(PendingIntent.getService(this, 0, new Intent(ACTION), 0));
+        final Intent intent = new Intent(getAction());
+        return(PendingIntent.getService(this, 0, intent, 0));
+    }
+
+    private String getAction() {
+        return(getString(R.string.action_name));
     }
 }
