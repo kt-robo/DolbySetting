@@ -61,10 +61,12 @@ public class DolbySettingService extends Service {
         mCallback = new DolbyMobileClientCallbacks() {
             @Override
             public void onEffectOnChanged(boolean on) {
-                Log.d(getClass().getName(), "onEffectOnChanged(" + on + ")");
-                mDolbyOn = on;
-                updateWidget();
-                displayNotification();
+                Log.d(getClass().getName(), "onEffectOnChanged(on=" + on + "):mDolbyOn=" + mDolbyOn);
+                if (mDolbyOn != on) {
+                    mDolbyOn = on;
+                    updateWidget();
+                    displayNotification();
+                }
             }
             @Override
             public void onPresetChanged(int presetCategory, int preset) {
@@ -72,7 +74,7 @@ public class DolbySettingService extends Service {
             @Override
             public void onServiceConnected() {
                 mDolbyOn = mDolbyClient.getDolbyEffectOn();
-                Log.d(getClass().getName(), "onServiceConnected() called. mDolbyOn=" + mDolbyOn);
+                Log.d(getClass().getName(), "onServiceConnected():mDolbyOn=" + mDolbyOn);
                 updateWidget();
                 displayNotification();
             }
@@ -145,6 +147,7 @@ public class DolbySettingService extends Service {
     }
 
     private void toggleDolby() {
+        Log.d(getClass().getName(), "toggleDolby():mDolbyOn=" + mDolbyOn);
         if (mDolbyClient != null) {
             boolean dolbyOn = !mDolbyOn;
             mDolbyClient.setDolbyEffectOn(dolbyOn);
