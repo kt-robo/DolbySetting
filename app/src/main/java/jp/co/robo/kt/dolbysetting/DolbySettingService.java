@@ -14,6 +14,10 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+/**
+ * Implementation of Service.
+ * AppWidgetからの要求で起動される。
+ */
 public class DolbySettingService extends Service {
     private static final String TAG = "DolbySettingService";
     private boolean mDolbyOn;

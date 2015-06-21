@@ -8,6 +8,7 @@ import android.content.Intent;
 
 /**
  * Implementation of App Widget functionality.
+ * 処理の実体はサービスにあるので、ここはサービスの起動と停止のみ。
  */
 public class DolbySettingWidget extends AppWidgetProvider {
 
