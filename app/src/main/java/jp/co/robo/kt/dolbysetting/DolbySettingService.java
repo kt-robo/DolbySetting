@@ -47,6 +47,7 @@ public class DolbySettingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = (intent == null)? "":intent.getAction();
+        Log.d(getClass().getName(), "onStartCommand(action=" + action + ")");
         if (getAction().equals(action)) {
             toggleDolby();
         } else {
@@ -147,7 +148,7 @@ public class DolbySettingService extends Service {
     }
 
     private void toggleDolby() {
-        Log.d(getClass().getName(), "toggleDolby():mDolbyOn=" + mDolbyOn);
+        Log.d(getClass().getName(), "toggleDolby():mDolbyOn=" + mDolbyOn + ":mDolbyClient=" + mDolbyClient);
         if (mDolbyClient != null) {
             boolean dolbyOn = !mDolbyOn;
             mDolbyClient.setDolbyEffectOn(dolbyOn);
