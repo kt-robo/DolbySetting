@@ -108,9 +108,9 @@ public class DolbySettingService extends Service {
 
     private void displayWidget(boolean initialize) {
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.main);
-        if (initialize) {
+        //if (initialize) {
             remoteViews.setOnClickPendingIntent(R.id.WidgetButton, getPendingIntent());
-        }
+        //}
         int buttonImageId = (mDolbyOn)? R.mipmap.widget_button_on:R.mipmap.widget_button_off;
         remoteViews.setImageViewResource(R.id.WidgetButton, buttonImageId);
         ComponentName widget = new ComponentName(this, DolbySettingWidget.class);
