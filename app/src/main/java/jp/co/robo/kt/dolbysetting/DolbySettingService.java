@@ -24,6 +24,7 @@ public class DolbySettingService extends Service {
     private DolbyMobileClientCallbacks mCallback;
 
     public DolbySettingService() {
+        mDolbyOn = false;
     }
 
     @Override
@@ -74,10 +75,12 @@ public class DolbySettingService extends Service {
             }
             @Override
             public void onServiceConnected() {
-                mDolbyOn = mDolbyClient.getDolbyEffectOn();
-                Log.d(getClass().getName(), "onServiceConnected():mDolbyOn=" + mDolbyOn);
-                displayWidget();
-                displayNotification();
+                boolean dolbyOn = mDolbyClient.getDolbyEffectOn();
+                Log.d(getClass().getName(), "onServiceConnected():mDolbyOn=" + mDolbyOn + ":dolbyOn=" + dolbyOn);
+                if (mDolbyOn != dolbyOn) {
+                    displayWidget();
+                    displayNotification();
+                }
             }
             @Override
             public void onServiceDisconnected() {
