@@ -51,7 +51,7 @@ public class DolbySettingService extends Service {
         if (getAction().equals(action)) {
             toggleDolby();
         } else {
-            initializeWidget();
+            displayWidget();
             displayNotification();
         }
         return(START_STICKY);
@@ -65,7 +65,7 @@ public class DolbySettingService extends Service {
                 Log.d(getClass().getName(), "onEffectOnChanged(on=" + on + "):mDolbyOn=" + mDolbyOn);
                 if (mDolbyOn != on) {
                     mDolbyOn = on;
-                    updateWidget();
+                    displayWidget();
                     displayNotification();
                 }
             }
@@ -76,7 +76,7 @@ public class DolbySettingService extends Service {
             public void onServiceConnected() {
                 mDolbyOn = mDolbyClient.getDolbyEffectOn();
                 Log.d(getClass().getName(), "onServiceConnected():mDolbyOn=" + mDolbyOn);
-                updateWidget();
+                displayWidget();
                 displayNotification();
             }
             @Override
@@ -98,19 +98,9 @@ public class DolbySettingService extends Service {
         }
     }
 
-    private void initializeWidget() {
-        displayWidget(true);
-    }
-
-    private void updateWidget() {
-        displayWidget(false);
-    }
-
-    private void displayWidget(boolean initialize) {
+    private void displayWidget() {
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.main);
-        //if (initialize) {
-            remoteViews.setOnClickPendingIntent(R.id.WidgetButton, getPendingIntent());
-        //}
+        remoteViews.setOnClickPendingIntent(R.id.WidgetButton, getPendingIntent());
         int buttonImageId = (mDolbyOn)? R.mipmap.widget_button_on:R.mipmap.widget_button_off;
         remoteViews.setImageViewResource(R.id.WidgetButton, buttonImageId);
         ComponentName widget = new ComponentName(this, DolbySettingWidget.class);
