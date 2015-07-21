@@ -140,7 +140,9 @@ public class DolbySettingService extends Service {
     private void toggleDolby() {
         Log.d(getClass().getName(), "toggleDolby():mDolbyOn=" + mDolbyOn + ":mDolbyClient=" + mDolbyClient);
         if (mDolbyClient != null) {
-            boolean dolbyOn = !mDolbyOn;
+            // mDolbyOnと実際の設定値が食い違うことがある（原因不明）ため、
+            // このdolbyOnはmDolbyOnではなく実際の設定値をもとにする。
+            boolean dolbyOn = !mDolbyClient.getDolbyEffectOn();
             mDolbyClient.setDolbyEffectOn(dolbyOn);
             mDolbyClient.setGlobalEffectOn(dolbyOn);
         }
