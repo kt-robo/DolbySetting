@@ -78,6 +78,7 @@ public class DolbySettingService extends Service {
                 boolean dolbyOn = mDolbyClient.getDolbyEffectOn();
                 Log.d(getClass().getName(), "onServiceConnected():mDolbyOn=" + mDolbyOn + ":dolbyOn=" + dolbyOn);
                 if (mDolbyOn != dolbyOn) {
+                    mDolbyOn = dolbyOn;
                     displayWidget();
                     displayNotification();
                 }
